@@ -2,11 +2,18 @@
 import pickle
 import pandas as pd
 from sklearn.metrics import classification_report, accuracy_score, recall_score, f1_score, roc_auc_score
+import os
+import pandas as pd
 
-X_test_1 = pd.read_csv('data/dataset2/X_test_processed.csv')
-y_test_1 = pd.read_csv('data/dataset2/y_test.csv')
+base_dir = os.path.dirname(__file__)  # directory of the script
+file_path = os.path.join(base_dir, 'data', 'dataset2', 'X_test_processed.csv')
+file_path_y = os.path.join(base_dir, 'data', 'dataset2', 'y_test.csv')
+model_path = os.path.join(base_dir, 'lr.pkl')
+
+X_test_1 = pd.read_csv(file_path)
+y_test_1 = pd.read_csv(file_path_y)
 # Load model from pkl file
-with open("lr.pkl", "rb") as f:
+with open(model_path, "rb") as f:
     model = pickle.load(f)
 
 # Use the model
@@ -22,3 +29,5 @@ test_results_1.append({
 })
 
 print(pd.DataFrame(test_results_1))
+print("Entire Metrics:")
+print(classification_report(y_test_1, y_pred_1))
